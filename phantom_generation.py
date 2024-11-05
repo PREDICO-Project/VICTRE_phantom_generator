@@ -51,7 +51,20 @@ class Generation():
             "number_histories": self.events,
             "spectrum_file": self.spectrum_file} # More attributes can be added
         
-        self.arguments_generation = self.define_arguments_from_Constants() # define_arguments_from_Constants() or define_arguments_manually
+        self.arguments_generation = self.define_arguments_from_Constants() # define_arguments_from_Constants() or define_arguments_manually()
+
+        # Set arguments_generation directly, without running the method define_arguments_from_Constants() nor define_arguments_manually()
+        # See https://didsr.github.io/VICTRE_PIPELINE/advanced.html to check all parameters that can be added or modified
+        """self.arguments_generation = {
+
+            "compressionThickness": 60,  # mm
+
+            # phantom voxel size (mm)
+            "imgRes": self.imgRes,
+
+            # desired fat fraction
+            "targetFatFrac": 0.5 
+        }"""
         ##########################################
         # DO NOT MODIFY ANY LINE FROM THIS POINT #
         ##########################################
@@ -131,6 +144,7 @@ class Generation():
             "targetFatFrac": targetFatFrac
             }
         return arguments_generation
+    
                 
     def define_Pipeline(self):
         # If lesion are inserted
