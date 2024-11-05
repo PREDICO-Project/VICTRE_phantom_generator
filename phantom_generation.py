@@ -4,28 +4,29 @@ from Victre import Constants
 import os
 import sys
 import random
+# Script used to generate VICTRE's phantom with some preset parameters
 class Generation():
 
     def __init__(self):
         # Select which processes are done
-        self.generate_phantom = True # Breast Generation
-        self.compress_phantom = True # Breast Compression
-        self.lesion = True # Lesion Insertion
-        self.projection = True # MCGPU Projection
-        self.reconstruction = False # Reconstruction of Projections
+        self.generate_phantom = True # Breast Generation True/False
+        self.compress_phantom = True # Breast Compression True/False
+        self.lesion = True # Lesion Insertion True/False
+        self.projection = True # MCGPU Projection True/False
+        self.reconstruction = False # Reconstruction of Projections True/False
         
 
         # Set some important parameters
-        self.seed = random.randint(1, 9999)
-        self.results_folder = "results/Scattered_calc"
-        os.makedirs(self.results_folder, exist_ok =True)
+        self.seed = random.randint(1, 9999) # Random seed
+        self.results_folder = "results/Scattered_calc" # Path to Results folder, can be modified
+        os.makedirs(self.results_folder, exist_ok =True) # If folder does not exists, it will be created
         self.breast_type = "Scattered" # Dense, Fatty, Heterogeneous, Scattered
         self.imgRes = 0.2 # Voxel Size in mm
         
         
         # Set some paths to existing phantoms (if exists)
         self.phantom_file = "phantoms/Heterogeneous_lession.raw" # Just in case you don´t want to generate the phantom and select an existing one
-        self.compressed_phantom = "PATH_TO_COMPRESSED_MHD"
+        self.compressed_phantom = "PATH_TO_COMPRESSED_MHD" # Must be modified
         
         self.lesion_type = 'calc' # calc or mass
 		
@@ -35,23 +36,26 @@ class Generation():
         self.spectrum_file= "./Victre/projection/spectrum/W30kVp_Rh50um_Be1mm.spc"
         
         self.roi_sizes = {Constants.VICTRE_SPICULATED: [65, 65, 5],
-             Constants.VICTRE_CLUSTERCALC: [65, 65, 5]}
+             Constants.VICTRE_CLUSTERCALC: [65, 65, 5]} # Can be modified
         
         if self.lesion:
             if self.lesion_type == 'mass':
-                self.lesion_file = "lesions/spiculated/mass_11_size1.00.h5"
+                self.lesion_file = "lesions/spiculated/mass_11_size1.00.h5" # Can be modified
                 
             if self.lesion_type == 'calc':
-                self.lesion_file = "lesions/clustercalc/clustercalc_model.h5"
+                self.lesion_file = "lesions/clustercalc/clustercalc_model.h5" # Can be modified
                 
 		
         self.arguments_mcgpu = {
             "number_projections": self.number_projections,
             "number_histories": self.events,
-            "spectrum_file": self.spectrum_file}
-
-        #pline = self.define_Pipeline()
-        self.arguments_generation = self.define_arguments_from_Constants()
+            "spectrum_file": self.spectrum_file} # More attributes can be added
+        
+        self.arguments_generation = self.define_arguments_from_Constants() # define_arguments_from_Constants() or define_arguments_manually
+        ##########################################
+        # DO NOT MODIFY ANY LINE FROM THIS POINT #
+        ##########################################
+        
         self.arguments_generation["imgRes"] = self.imgRes
         print(self.arguments_generation)
         
@@ -99,6 +103,7 @@ class Generation():
 
         return arguments_generation
     def define_arguments_manually(self):
+        # If want to add more parameters, modify the arguments_generation dictionary
         # Set parameters for each type of breast
 
         if self.breast_type == "Fatty":
@@ -116,6 +121,7 @@ class Generation():
         if self.breast_type == "Heterogeneous":
             targetFatFrac = 0.143
             compressionThickness = 45
+        
 
         arguments_generation = {
             "compressionThickness": compressionThickness,  # mm
