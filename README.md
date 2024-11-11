@@ -14,10 +14,11 @@ It also enables set parameters manually modifying **define_arguments_manually** 
 
 ```python3
 arguments_generation = {
-            "compressionThickness": compressionThickness,  # mm
+            "compressionThickness": 60.,  # mm
             # phantom voxel size (mm)
-            "imgRes": self.imgRes,
+            "imgRes": 0.1,
             # desired fat fraction
-            "targetFatFrac": targetFatFrac
+            "targetFatFrac": 0.6,
+            # More parameters can be modified
             }
 ```
